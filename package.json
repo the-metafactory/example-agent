@@ -1,0 +1,16 @@
+{
+  "name": "example-agent",
+  "version": "0.1.0",
+  "description": "A minimal reference cortex bot pack for the metafactory stack.",
+  "type": "module",
+  "private": false,
+  "license": "MIT",
+  "scripts": {
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.0",
+    "typescript": "^5.5.0"
+  }
+}

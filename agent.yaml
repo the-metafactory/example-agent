@@ -1,0 +1,25 @@
+# example-agent fragment — installed to ~/.config/cortex/agents.d/example-agent.yaml
+#
+# This is the "agents.d" fragment cortex reads to register the agent. The
+# presence block stays EMPTY here on purpose: the principal provisions the
+# surface bot identity (token via the cortex secret store, channel allowlist)
+# on the stack — a pack must NEVER touch cortex.yaml or carry a token.
+
+id: example-agent
+displayName: "Example Agent"
+persona: "../personas/example-agent.md"   # installed path, beside the fragment
+trust: []
+presence: {}                              # principal wires presence on the stack
+runtime:
+  mode: in-process
+  capabilities:
+    - example.greet                       # the capability this agent answers
+  modelClass: frontier
+  brain:
+    kind: exec
+    run: "bun {pack}/brain/main.ts"       # {pack} → the arc install path
+    protocol: cortex-brain/v1
+    lifecycle: daemon                      # long-lived: connect once, serve events
+    secrets: []                            # declare env secrets the brain reads
+    dispatch_capabilities: []
+    maxRestarts: 3

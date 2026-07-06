@@ -1,0 +1,32 @@
+# arc-manifest.yaml — example-agent
+#
+# THE CANONICAL SAMPLE cortex bot pack. Copy this repo, rename it, and build
+# your own agent for the metafactory stack. Every file here is deliberately
+# minimal and heavily commented so it reads as a tutorial, not production code.
+# See: https://github.com/the-metafactory/arc
+#
+# `arc install example-agent` drops the agent fragment + persona into the cortex
+# host's agents.d/ + personas/ dirs, then runs the lifecycle postinstall scripts
+# (signal `cortex agents reload` → mint the daemon's scoped NATS creds).
+
+name: "Example Agent"
+version: "0.1.0"
+type: agent
+tier: community
+description: "A minimal, fully-commented reference cortex bot pack — the canonical starting point for building a metafactory agent. Greets, echoes, and demonstrates the principal-gate roundtrip over cortex-brain/v1."
+authors:
+  - "the-metafactory"
+repository: "the-metafactory/example-agent"
+
+targets:
+  - cortex
+
+# Brain secrets are declared in agent.yaml (runtime.brain.secrets) and shown to
+# the principal at install; the cortex daemon-brain host injects them as env,
+# never writing them into the fragment. This sample needs none — a real agent
+# might declare e.g. ANTHROPIC_API_KEY here.
+
+lifecycle:
+  postinstall:
+    - scripts/signal-cortex-reload.sh
+    - scripts/issue-nats-creds.sh
