@@ -46,6 +46,7 @@ brain/
 scripts/
   signal-cortex-reload.sh   postinstall step 1 — cortex agents reload
   issue-nats-creds.sh       postinstall step 2 — cortex creds issue example-agent
+  scaffold-state.sh         postinstall step 3 — scaffold instance state (optional, soft-skips)
 test/
   handler.test.ts   drives the brain, asserts the exact effect stream
 ```
@@ -100,6 +101,44 @@ Resolution order (first hit wins), in `brain/config.ts`:
 
 So two operators install the same pack and run **Aria** and **Pylon**, each with
 their own persona — no forking, no clobbered upgrades.
+
+## State (optional): an agent that remembers
+
+Agents are **stateless by default** — you bring your own grounding, and
+deleting the `state:` block from `arc-manifest.yaml` gives you exactly the
+pack that existed before it. Declaring it opts the agent into the metafactory
+**memory module**: each installed agent gets a home of its own, not a slot in
+a super-brain.
+
+```yaml
+# arc-manifest.yaml
+state:
+  blueprint: AgentState
+  version: ">=0.1.0"
+```
+
+On install, postinstall step 3 delegates to the
+[agent-state](https://github.com/the-metafactory/agent-state) bundle's
+`ScaffoldFolders` workflow, which lays down:
+
+```
+~/.config/cortex/agents/example-agent/
+├── state.sqlite     work_items (the agent's queue) + events (append-only diary)
+├── dashboard.md     human-readable status, regenerated from state
+├── retros/          weekly retrospective summaries
+├── context/         repos.md + channels.md — the agent's scope notes
+└── CLAUDE.md        instance bridge for substrate sessions
+```
+
+The step **soft-skips** if the bundle isn't installed (`arc install
+agent-state` to opt in later) — the sample installs cleanly either way.
+
+What works today vs. what's coming: the scaffold gives your brain a durable
+home it can read and write (queue work in `work_items`, journal to `events`).
+Host-side lifecycle wiring — replay unfinished work when the agent restarts,
+enqueue/resolve around dispatches, dashboard regeneration — is cortex's side
+of the contract, tracked in
+[cortex#1720](https://github.com/the-metafactory/cortex/issues/1720).
 
 ## How the brain works
 

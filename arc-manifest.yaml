@@ -26,7 +26,26 @@ targets:
 # never writing them into the fragment. This sample needs none — a real agent
 # might declare e.g. ANTHROPIC_API_KEY here.
 
+# Instance state (OPTIONAL) — the memory module.
+#
+# Agents are stateless by default: you bring your own grounding, and a pack
+# with no `state` block runs exactly as before. Declaring one opts this agent
+# into the metafactory memory module — the agent-state bundle
+# (github.com/the-metafactory/agent-state) scaffolds a per-instance home at
+# ~/.config/cortex/agents/example-agent/ with a work queue (work_items), an
+# append-only diary (events), a dashboard, and weekly retros. The agent gets
+# a memory of its own — no super-brain in the middle.
+#
+# Today the postinstall script (step 3 below) scaffolds the home and the brain
+# may read/write it. Host-side lifecycle wiring (replay unfinished work on
+# start, queue/resolve on dispatch) lands with cortex#1720.
+# Field shape per forge/design/agent-platform.md §state.
+state:
+  blueprint: AgentState
+  version: ">=0.1.0"
+
 lifecycle:
   postinstall:
     - scripts/signal-cortex-reload.sh
     - scripts/issue-nats-creds.sh
+    - scripts/scaffold-state.sh
