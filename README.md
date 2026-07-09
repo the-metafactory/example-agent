@@ -113,7 +113,7 @@ a super-brain.
 ```yaml
 # arc-manifest.yaml
 state:
-  blueprint: AgentState
+  blueprint: agent-state
   version: ">=0.1.0"
 ```
 
