@@ -41,7 +41,7 @@ targets:
 # start, queue/resolve on dispatch) lands with cortex#1720.
 # Field shape per forge/design/agent-platform.md §state.
 state:
-  blueprint: AgentState
+  blueprint: agent-state
   version: ">=0.1.0"
 
 lifecycle:
