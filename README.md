@@ -1,5 +1,14 @@
 # example-agent
 
+> **This repo seeded the brain-class sample family.** One canonical teaching
+> sample now exists per brain class (taxonomy:
+> [meta-factory#562](https://github.com/the-metafactory/meta-factory/issues/562)):
+> [metafactory-cortex-agent-example-deterministic](https://github.com/the-metafactory/metafactory-cortex-agent-example-deterministic) /
+> [metafactory-cortex-agent-example-non-deterministic](https://github.com/the-metafactory/metafactory-cortex-agent-example-non-deterministic) /
+> [metafactory-cortex-agent-example-hybrid](https://github.com/the-metafactory/metafactory-cortex-agent-example-hybrid).
+> Start there. This repo's own retirement/redirect is tracked in the
+> agent-estate spec, [the-metafactory/arc#350](https://github.com/the-metafactory/arc/issues/350).
+
 **The canonical sample cortex bot pack for the metafactory stack.** Copy this
 repo, rename it, drop in your own logic, and you have an arc-installable agent.
 Every file is deliberately minimal and heavily commented — it reads as a
